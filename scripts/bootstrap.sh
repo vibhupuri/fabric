@@ -39,9 +39,9 @@ dockerPull() {
     do
         image_name="$1"
         echo "====> hyperledger/fabric-$image_name:$three_digit_image_tag"
-        docker pull "hyperledger/fabric-$image_name:$three_digit_image_tag"
-        docker tag "hyperledger/fabric-$image_name:$three_digit_image_tag" "hyperledger/fabric-$image_name"
-        docker tag "hyperledger/fabric-$image_name:$three_digit_image_tag" "hyperledger/fabric-$image_name:$two_digit_image_tag"
+        podman pull "hyperledger/fabric-$image_name:$three_digit_image_tag"
+        podman tag "hyperledger/fabric-$image_name:$three_digit_image_tag" "hyperledger/fabric-$image_name"
+        podman tag "hyperledger/fabric-$image_name:$three_digit_image_tag" "hyperledger/fabric-$image_name:$two_digit_image_tag"
         shift
     done
 }
@@ -106,7 +106,7 @@ pullBinaries() {
 }
 
 pullDockerImages() {
-    command -v docker >& /dev/null
+    command -v podman >& /dev/null
     NODOCKER=$?
     if [ "${NODOCKER}" == 0 ]; then
         FABRIC_IMAGES=(peer orderer ccenv tools)
@@ -123,7 +123,7 @@ pullDockerImages() {
         CA_IMAGE=(ca)
         dockerPull "${CA_TAG}" "${CA_IMAGE[@]}"
         echo "===> List out hyperledger docker images"
-        docker images | grep hyperledger
+        podman images | grep hyperledger
     else
         echo "========================================================="
         echo "Docker not installed, bypassing download of Fabric images"
